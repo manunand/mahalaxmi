@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Window Measurements</title>
+    <style>
+        body{
+          text-align: center;
+        }
+        table{
+            border-collapse: collapse;
+            text-align: center;
+            margin: 0 auto;
+        }
+        th, td {
+            border-style:ridge;
+            padding: 5px;
+            
+        }
+        h4{
+            margin: 10px;
+        }
+        .button {
+          background-color: #4CAF50; /* Green */
+          border: none;
+          color: white;
+          padding: 5px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+        }
+        .deleteBtn {
+          background-color: #f44336; /* Red */
+          border: none;
+          color: white;
+          padding: 5px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 0;
+          cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+	<h1>Shri Mahalaxmi Aluminium & Glass</h1>
+	
+	<form action="" method="post" id="myForm">
+		Width : <input type="number" step="0.1" name="width" name="wdth" id="wdth">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		Height : <input type="number" step="0.1" name="height" name="hght" id="hght"><br><br>
+        <label for="track">Track :</label>
+        <select name="track" id="track" required>
+        <option value="" selected disabled>Select Track 2/3</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        </select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label for="design">Design :</label>
+        <select name="design" id="design" required>
+        <option value="" selected disabled>Select Glass Design</option>
+        <option value="One Way">One Way</option>
+        <option value="Plain">Plain</option>
+        </select><br><br>
+		<input type="submit" name="submit" value="Go......" class="button" style="background-color: #555555;"><br><br>
+	</form>
+  <div style="text-align: center;width: 100%;text-align: center;">
+    <table>
+      <thead>
+        <tr>
+          <th>Width X Height</th>
+          <th>H/L , I/L</th>
+          <th>T/B</th>
+          <th>Glass</th>
+          <th>Track</th>
+          <th>Design</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+	<br>
+    <button class="button" onclick="window.print()">Print</button>
+	<script>
+      const formEl = document.querySelector("form");
+      const tbodyEl = document.querySelector("tbody");
+      const tableEl = document.querySelector("table");
+      function onAddwdth(e) {
+        e.preventDefault();
+        const wdth = document.getElementById("wdth").value;
+        const hght = document.getElementById("hght").value;
+        const track = document.getElementById("track").value;
+        const design = document.getElementById("design").value;
+        const handle = subtract(hght,1.4);
+        var lessval;
+        if(track == 2){
+            lessval = 6.4;
+        }else{
+            lessval = 8;
+        }
+        const less = subtract(wdth,lessval);
+        const topbot = divide(less,track);
+        const gwd = add(topbot,0.5);
+        const ght = subtract(handle,3);
+        tbodyEl.innerHTML += `
+            <tr>
+                <td>${wdth} X ${hght}</td>
+                <td>${handle}</td>
+                <td>${topbot}</td>
+                <td>${gwd} x ${ght}</td>
+                <td>${track}</td>
+                <td>${design}</td> 
+                <td style="padding:2px;"><button class="deleteBtn">Delete</button></td>
+            </tr>
+        `;
+        document.getElementById("myForm").reset();
+    }
+    function subtract(p,q){
+        a = Math.floor(p);
+        b = (p - a)*10;
+
+        c = Math.floor(q);
+        d = (q - c)*10;
+
+        x = (a*8)+b;
+        y = (c*8)+d;
+        z = x-y;
+
+        m = Math.floor(z/8);
+        n = z-(m*8);
+        return m+(n/10);
+    }
+    function divide(k,l){
+        a = Math.floor(k);
+        b = (k - a)*10;
+        
+        x = (a*8)+b;
+        z = x/l;
+
+        m = Math.floor(z/8);
+        n = z-(m*8);
+        return m+(n/10);
+    }
+    function add(p,q)
+    {
+        a = Math.floor(p);
+        b = (p - a)*10;
+
+        c = Math.floor(q);
+        d = (q - c)*10;
+
+        x = (a*8)+b;
+        y = (c*8)+d;
+        z = x+y;	
+
+        m = Math.floor(z/8);
+        n = z-(m*8);
+        return m+(n/10);
+    }
+
+
+      function onDeleteRow(e) {
+        if (!e.target.classList.contains("deleteBtn")) {
+          return;
+        }
+
+        const btn = e.target;
+        btn.closest("tr").remove();
+      }
+
+      formEl.addEventListener("submit", onAddwdth);
+      tableEl.addEventListener("click", onDeleteRow);
+    </script>
+
+</body>
+</html>
